@@ -7,19 +7,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.ideal48.application160519.R;
 import com.example.ideal48.application160519.activity.HomeActivity;
@@ -83,25 +78,13 @@ public class AnimeFragment extends Fragment {
                 return false;
             }
         });
-//        HomeActivity.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                if (item.getItemId() == R.id.action_search){
-//                    Toast.makeText(context, "search item selected", Toast.LENGTH_SHORT).show();
-//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                    FragmentTransaction ft = fragmentManager.beginTransaction();
-//                    //ft.replace(R.id.frame_layout, new HomeFragment()).addToBackStack("AnimeFragment");
-//                    //ft.commit();
-//                }
-//                return false;
-//            }
-//        });
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.e("AnimeFragment", "onPause called");
+        // Remove Search Action from Toolbar when Fragment is not Visible.
         HomeActivity.toolbar.getMenu().clear();
     }
 }

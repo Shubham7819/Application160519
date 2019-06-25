@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
-import com.example.ideal48.application160519.fragment.CommonAnimeFragment;
 import com.example.ideal48.application160519.R;
+import com.example.ideal48.application160519.fragment.CommonAnimeFragment;
 
 public class AnimePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -22,7 +21,7 @@ public class AnimePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.e("Position",">>>>>>>>>>>>>>>>>>>>>>>>>"+position);
+        Log.e("Position", ">>>>>>>>>>>>>>>>>>>>>>>>>" + position);
 
         if (position == 0) {
             Bundle b0 = new Bundle();

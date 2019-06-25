@@ -7,10 +7,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.ideal48.application160519.model.Anime;
-import com.example.ideal48.application160519.model.FavAnime;
 import com.example.ideal48.application160519.model.User;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -25,9 +23,6 @@ public interface UserDao {
 
     @Query("SELECT * FROM users_table WHERE user_id != :userId ")
     List<User> getAllUsers(String userId);
-
-    //@Query("SELECT password from users_table where user_id LIKE :userId")
-    //String getPassword(String userId);
 
     @Query("SELECT * FROM users_table WHERE user_id = :userId AND password = :password")
     User checkIfUser(String userId, String password);
@@ -54,7 +49,7 @@ public interface UserDao {
     Anime isAnimeFav(int malId);
 
     @Delete
-    public void deleteFavAnime(Anime anime);
+    void deleteFavAnime(Anime anime);
 
     @Insert
     void insertFavAnime(Anime anime);

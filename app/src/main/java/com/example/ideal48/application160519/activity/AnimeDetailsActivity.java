@@ -57,13 +57,6 @@ public class AnimeDetailsActivity extends AppCompatActivity {
             }
         });
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
-
         picasso = picasso.with(this);
 
         progressDialog = new ProgressDialog(this);
@@ -108,7 +101,7 @@ public class AnimeDetailsActivity extends AppCompatActivity {
                                 titleTV.setVisibility(View.GONE);
                                 isShow = true;
                             } else if (isShow) {
-                                collapsingToolbar.setTitle(" ");//careful there should a space between double quote otherwise it wont work
+                                collapsingToolbar.setTitle(" ");//careful there should a space between double quote otherwise it won't work
                                 titleTV.setVisibility(View.VISIBLE);
                                 isShow = false;
                             }

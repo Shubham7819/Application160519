@@ -19,32 +19,32 @@ import retrofit2.http.Query;
 
 public interface GetDataService {
 
-    @GET("top/anime/1")
-    Call<AnimeResponse> getAllAnime();
+    @GET("top/anime/{page}")
+    Call<AnimeResponse> getAllAnime(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/airing")
-    Call<AnimeResponse> getAiring();
+    @GET("top/anime/{page}/airing")
+    Call<AnimeResponse> getAiring(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/upcoming")
-    Call<AnimeResponse> getUpcoming();
+    @GET("top/anime/{page}/upcoming")
+    Call<AnimeResponse> getUpcoming(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/tv")
-    Call<AnimeResponse> getTV();
+    @GET("top/anime/{page}/tv")
+    Call<AnimeResponse> getTV(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/movie")
-    Call<AnimeResponse> getMovie();
+    @GET("top/anime/{page}/movie")
+    Call<AnimeResponse> getMovie(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/ova")
-    Call<AnimeResponse> getOva();
+    @GET("top/anime/{page}/ova")
+    Call<AnimeResponse> getOva(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/special")
-    Call<AnimeResponse> getSpecial();
+    @GET("top/anime/{page}/special")
+    Call<AnimeResponse> getSpecial(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/bypopularity")
-    Call<AnimeResponse> getBypopularity();
+    @GET("top/anime/{page}/bypopularity")
+    Call<AnimeResponse> getBypopularity(@Path("page") int pageIndex);
 
-    @GET("top/anime/1/favorite")
-    Call<AnimeResponse> getFavorite();
+    @GET("top/anime/{page}/favorite")
+    Call<AnimeResponse> getFavorite(@Path("page") int pageIndex);
 
 
     @GET("anime/{id}/characters_staff")

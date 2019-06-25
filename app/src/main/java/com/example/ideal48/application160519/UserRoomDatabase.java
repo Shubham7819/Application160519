@@ -6,7 +6,6 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.example.ideal48.application160519.model.Anime;
-import com.example.ideal48.application160519.model.FavAnime;
 import com.example.ideal48.application160519.model.User;
 
 /**
@@ -20,10 +19,10 @@ public abstract class UserRoomDatabase extends RoomDatabase {
 
     private static volatile UserRoomDatabase INSTANCE;
 
-    public static UserRoomDatabase getDatabase(final Context context){
-        if (INSTANCE == null){
-            synchronized (UserRoomDatabase.class){
-                if (INSTANCE == null){
+    public static UserRoomDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (UserRoomDatabase.class) {
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             UserRoomDatabase.class, "user_database").allowMainThreadQueries().build();
                 }
@@ -31,5 +30,4 @@ public abstract class UserRoomDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-
 }
