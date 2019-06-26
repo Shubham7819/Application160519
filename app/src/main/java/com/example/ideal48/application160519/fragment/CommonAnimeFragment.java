@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,21 +29,16 @@ import com.example.ideal48.application160519.RequestFailure;
 import com.example.ideal48.application160519.RetrofitClientInstance;
 import com.example.ideal48.application160519.adapter.AnimeListAdapter;
 import com.example.ideal48.application160519.model.Anime;
-import com.example.ideal48.application160519.model.AnimeResponse;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
 
 
 public class CommonAnimeFragment extends Fragment {
 
     View view;
-    private List<Anime> mAnimeList = new ArrayList<>();
-
+    View loadingIndicator;
+    TextView mEmptyStateTextView;
+    RecyclerView animeRecyclerView;
     String mAnimeCategory = "";
-    Call<AnimeResponse> call;
+    private static final String TAG = CommonAnimeFragment.class.getSimpleName();
 
     public CommonAnimeFragment() {
         // Required empty public constructor
@@ -53,6 +49,7 @@ public class CommonAnimeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mAnimeCategory = getArguments().getString(getString(R.string.url));
+            Log.v(TAG, "Category: " + mAnimeCategory);
         }
     }
 
@@ -62,9 +59,17 @@ public class CommonAnimeFragment extends Fragment {
 
         view = inflater.inflate(R.layout.anime_list_layout, container, false);
 
-        TextView mEmptyStateTextView = (TextView) view.findViewById(R.id.empty_view);
-        View loadingIndicator = view.findViewById(R.id.loading_indicator);
-        RecyclerView animeRecyclerView = view.findViewById(R.id.anime_recycler_list);
+        mEmptyStateTextView = (TextView) view.findViewById(R.id.empty_view);
+        loadingIndicator = view.findViewById(R.id.loading_indicator);
+        animeRecyclerView = view.findViewById(R.id.anime_recycler_list);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, "Category: " + mAnimeCategory + ": onResume Called");
 
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -100,7 +105,7 @@ public class CommonAnimeFragment extends Fragment {
                 public void onChanged(@Nullable final RequestFailure requestFailure) {
                     if (requestFailure == null) return;
 
-                    Snackbar.make(view.findViewById(R.id.anime_recycler_list), requestFailure.getErrorMessage(), Snackbar.LENGTH_LONG)
+                    Snackbar.make(mEmptyStateTextView, requestFailure.getErrorMessage(), Snackbar.LENGTH_LONG)
                             .setAction("RETRY", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -119,7 +124,5 @@ public class CommonAnimeFragment extends Fragment {
             Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
 
         }
-        return view;
     }
-
 }

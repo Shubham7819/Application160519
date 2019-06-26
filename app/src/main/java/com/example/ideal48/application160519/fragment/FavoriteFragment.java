@@ -41,7 +41,7 @@ import retrofit2.Response;
 public class FavoriteFragment extends Fragment {
 
     private TextView mEmptyListTV;
-    RecyclerView mRecyclerView;
+    public static RecyclerView mRecyclerView;
     View loadingIndicator;
     UserDao userDao;
 
