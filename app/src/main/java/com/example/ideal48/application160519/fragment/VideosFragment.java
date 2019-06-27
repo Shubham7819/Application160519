@@ -1,31 +1,22 @@
 package com.example.ideal48.application160519.fragment;
 
 
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.media.session.MediaController;
-import android.media.session.MediaSession;
-import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.example.ideal48.application160519.AnimeVideoPopupWindow;
 import com.example.ideal48.application160519.R;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
 import com.example.ideal48.application160519.model.EpisodesVideos;
@@ -64,7 +55,7 @@ public class VideosFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_videos, container, false);
@@ -81,7 +72,7 @@ public class VideosFragment extends Fragment {
         Call<VideosResponse> call = AnimeDetailsActivity.service.getVideosResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<VideosResponse>() {
             @Override
-            public void onResponse(Call<VideosResponse> call, Response<VideosResponse> response) {
+            public void onResponse(@NonNull Call<VideosResponse> call, @NonNull Response<VideosResponse> response) {
                 if (response.body() != null) {
 
                     promoVideosList = response.body().getmPromoList();
@@ -96,7 +87,7 @@ public class VideosFragment extends Fragment {
 
                     } else {
                         promoLoadingIndicator.setVisibility(View.GONE);
-                        promoEmptyTV.setText("Promos Not Available..");
+                        promoEmptyTV.setText(R.string.empty_promos_msg);
                     }
 
                     if (episodesVideosList != null && episodesVideosList.size() != 0) {
@@ -108,15 +99,15 @@ public class VideosFragment extends Fragment {
 
                     } else {
                         episodesLoadingIndicator.setVisibility(View.GONE);
-                        episodesEmptyTV.setText("Episodes Not Available..");
+                        episodesEmptyTV.setText(R.string.empty_episodes_msg);
                     }
 
                 }
             }
 
             @Override
-            public void onFailure(Call<VideosResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), "No Data !", Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<VideosResponse> call, @NonNull Throwable t) {
+                Toast.makeText(getActivity(), R.string.no_data, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -133,14 +124,15 @@ public class VideosFragment extends Fragment {
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public PromoVideosListAdapter.PromoVideosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PromoVideosListAdapter.PromoVideosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.videos_list_item, parent, false);
             return new PromoVideosViewHolder(mItemView);
         }
 
         @Override
-        public void onBindViewHolder(PromoVideosListAdapter.PromoVideosViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull PromoVideosListAdapter.PromoVideosViewHolder holder, int position) {
 
             final PromoVideos currentPromoVideo = promoVideosList.get(position);
 
@@ -156,7 +148,7 @@ public class VideosFragment extends Fragment {
                     String[] splittedUrl = currentPromoVideo.getmVideoUrl().split("embed/");
                     int stringLength = splittedUrl.length;
                     Intent appIntent = new Intent();
-                    if (stringLength > 1){
+                    if (stringLength > 1) {
                         appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + splittedUrl[1]));
                     }
                     Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -174,70 +166,6 @@ public class VideosFragment extends Fragment {
 //                    ShowVideoDialogFragment videoDialogFragment = new ShowVideoDialogFragment();
 //                    videoDialogFragment.setArguments(b);
 //                    videoDialogFragment.show(getActivity().getSupportFragmentManager().beginTransaction(), "ShowVideoDialogFragment");
-
-//                    Dialog mVideoDialog;
-//                    VideoView mVideoFullScreen;
-//                    MediaController controller;
-//
-//                    mVideoDialog = new Dialog(context);
-//                    mVideoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    mVideoDialog.setContentView(R.layout.video_popup_window_layout);
-////                    mVideoDialog.setOnKeyListener(this);
-//                    mVideoFullScreen = (VideoView) mVideoDialog.findViewById(R.id.popup_video_view);
-//
-//                    MediaSession mediaSession;
-//                    PlaybackState.Builder stateBuilder;
-//
-//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-//                        mediaSession = new MediaSession(context, "Media Session");
-//                        mediaSession.setFlags(
-//                                MediaSession.FLAG_HANDLES_MEDIA_BUTTONS |
-//                                        MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
-//                        mediaSession.setMediaButtonReceiver(null);
-//                        stateBuilder = new PlaybackState().Builder()
-//                                .setActions(
-//                                        PlaybackStateCompat.ACTION_PLAY |
-//                                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
-//                        mediaSession.setPlaybackState(stateBuilder.build());
-//                        mediaSession.setCallback(new MySessionCallback());
-//                        controller = new MediaController(context, mediaSession);
-//                    }
-//                    controller = new MediaController(context, mediaSession);
-//                    HelloWebViewClient webViewClient = new HelloWebViewClient();
-//                    webView.setWebViewClient(webViewClient);
-//
-//
-//                    private class HelloWebViewClient extends WebViewClient {
-//                        @Override
-//                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//
-//                            if (url.contentEquals("file:///android_asset/01")) {
-//                                showVideo(01); //check user click url from webview and pass int
-//                            } else if (url.contentEquals("file:///android_asset/02")) {
-//                                showVideo(02);//pass int to determine which video to play
-//                            } else {
-//                                System.out.println("DDD URL: " + url.toString());
-//                                view.loadUrl(url);
-//                            }
-//                            return true;
-//                        }
-//
-//                        public void showVideo(int i) {
-//                            if (i == 01) {
-//                                mVideoDialog.show();
-//                                mVideoFullScreen.setVideoPath("file:///sdcard/video file name.m4v");
-//                                controller.setMediaPlayer(mVideoFullScreen);
-//                                mVideoFullScreen.setMediaController(controller);
-//                                mVideoFullScreen.requestFocus();
-//                                mVideoFullScreen.start();
-//                            } else {
-//                            }
-//                        }
-//
-////                    new AnimeVideoPopupWindow(context, R.layout.image_popup_window_layout, view, currentPromoVideo.getmVideoUrl(), null);
-//                    }
-//                    mVideoDialog.show();
-                    //Toast.makeText(context,"item clicked...",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -248,12 +176,12 @@ public class VideosFragment extends Fragment {
             return promoVideosList.size();
         }
 
-        public class PromoVideosViewHolder extends RecyclerView.ViewHolder {
+        class PromoVideosViewHolder extends RecyclerView.ViewHolder {
 
             ImageView videoSnapIV;
             TextView titleTV;
 
-            public PromoVideosViewHolder(View itemView) {
+            PromoVideosViewHolder(View itemView) {
                 super(itemView);
                 videoSnapIV = itemView.findViewById(R.id.video_snap_iv);
                 titleTV = itemView.findViewById(R.id.video_title_tv);
@@ -266,19 +194,20 @@ public class VideosFragment extends Fragment {
         private LayoutInflater mInflater;
         private Context context;
 
-        public EpisodesVideosListAdapter(Context context) {
+        EpisodesVideosListAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public EpisodesVideosListAdapter.EpisodesVideosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public EpisodesVideosListAdapter.EpisodesVideosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.videos_list_item, parent, false);
             return new EpisodesVideosViewHolder(mItemView);
         }
 
         @Override
-        public void onBindViewHolder(EpisodesVideosListAdapter.EpisodesVideosViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull EpisodesVideosListAdapter.EpisodesVideosViewHolder holder, int position) {
 
             final EpisodesVideos currentEpisodesVideos = episodesVideosList.get(position);
 
@@ -291,11 +220,11 @@ public class VideosFragment extends Fragment {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    new AnimeVideoPopupWindow(context, R.layout.image_popup_window_layout, view, currentEpisodesVideos.getmUrl(), null);
+
                     String[] splittedUrl = currentEpisodesVideos.getmUrl().split("embed/");
                     int stringLength = splittedUrl.length;
                     Intent appIntent = new Intent();
-                    if (stringLength > 1){
+                    if (stringLength > 1) {
                         appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + splittedUrl[1]));
                     }
                     Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -313,7 +242,7 @@ public class VideosFragment extends Fragment {
 //                    ShowVideoDialogFragment videoDialogFragment = new ShowVideoDialogFragment();
 //                    videoDialogFragment.setArguments(b);
 //                    videoDialogFragment.show(getActivity().getSupportFragmentManager().beginTransaction(), "ShowVideoDialogFragment");
-                    //Toast.makeText(context, "item clicked...", Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -324,13 +253,13 @@ public class VideosFragment extends Fragment {
             return episodesVideosList.size();
         }
 
-        public class EpisodesVideosViewHolder extends RecyclerView.ViewHolder {
+        class EpisodesVideosViewHolder extends RecyclerView.ViewHolder {
 
             ImageView videoSnapIV;
             TextView titleTV;
             TextView episodeIndexIV;
 
-            public EpisodesVideosViewHolder(View itemView) {
+            EpisodesVideosViewHolder(View itemView) {
                 super(itemView);
                 videoSnapIV = itemView.findViewById(R.id.video_snap_iv);
                 titleTV = itemView.findViewById(R.id.video_title_tv);

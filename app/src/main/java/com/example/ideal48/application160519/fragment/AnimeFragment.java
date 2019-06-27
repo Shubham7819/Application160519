@@ -21,6 +21,8 @@ import com.example.ideal48.application160519.activity.HomeActivity;
 import com.example.ideal48.application160519.activity.SearchableActivity;
 import com.example.ideal48.application160519.adapter.AnimePagerAdapter;
 
+import static com.example.ideal48.application160519.activity.HomeActivity.toolbar;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -42,12 +44,11 @@ public class AnimeFragment extends Fragment {
         context = getActivity();
 
         ViewPager viewPager = view.findViewById(R.id.anime_viewpager);
+        TabLayout tabLayout = view.findViewById(R.id.anime_tabs);
 
         AnimePagerAdapter adapter = new AnimePagerAdapter(context, getActivity().getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);
-
-        TabLayout tabLayout = view.findViewById(R.id.anime_tabs);
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -59,9 +60,11 @@ public class AnimeFragment extends Fragment {
         super.onResume();
         Log.e("AnimeFragment", "onResume called");
 
+        toolbar.setTitle(R.string.anime);
+
         // Add SearchView in Toolbar
-        HomeActivity.toolbar.inflateMenu(R.menu.anime_search_menu);
-        MenuItem searchItem = HomeActivity.toolbar.getMenu().findItem(R.id.action_search);
+        toolbar.inflateMenu(R.menu.anime_search_menu);
+        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         ComponentName componentName = new ComponentName(context, SearchableActivity.class);
@@ -84,7 +87,8 @@ public class AnimeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.e("AnimeFragment", "onPause called");
+
         // Remove Search Action from Toolbar when Fragment is not Visible.
-        HomeActivity.toolbar.getMenu().clear();
+        toolbar.getMenu().clear();
     }
 }

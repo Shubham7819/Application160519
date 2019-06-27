@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ideal48.application160519.AnimeRoomDatabase;
 import com.example.ideal48.application160519.R;
-import com.example.ideal48.application160519.UserDao;
-import com.example.ideal48.application160519.UserRoomDatabase;
+import com.example.ideal48.application160519.AnimeDao;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
 import com.example.ideal48.application160519.model.Anime;
 import com.squareup.picasso.Picasso;
@@ -27,7 +27,7 @@ public class AnimeListAdapter extends PagedListAdapter<Anime, AnimeListAdapter.A
 
     private LayoutInflater mInflater;
     private Context context;
-    private UserDao userDao;
+    private AnimeDao animeDao;
     private List<Integer> favAnimeIdList = new ArrayList<>();
 
     public AnimeListAdapter(Context context) {
@@ -35,10 +35,10 @@ public class AnimeListAdapter extends PagedListAdapter<Anime, AnimeListAdapter.A
         mInflater = LayoutInflater.from(context);
         this.context = context;
 
-        UserRoomDatabase userRoomDatabase = UserRoomDatabase.getDatabase(context);
-        userDao = userRoomDatabase.userDao();
+        AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(context);
+        animeDao = animeRoomDatabase.userDao();
 
-        List<Anime> favAnimeList = userDao.getAllFavAnime();
+        List<Anime> favAnimeList = animeDao.getAllFavAnime();
 
         for (int i = 0; i < favAnimeList.size(); i++) {
             favAnimeIdList.add(favAnimeList.get(i).getmMalId());
@@ -99,7 +99,7 @@ public class AnimeListAdapter extends PagedListAdapter<Anime, AnimeListAdapter.A
                             new AsyncTask<Void, Void, Void>() {
                                 @Override
                                 protected Void doInBackground(Void... voids) {
-                                    userDao.deleteFavAnime(anime);
+                                    animeDao.deleteFavAnime(anime);
                                     return null;
                                 }
                             }.execute();
@@ -109,7 +109,7 @@ public class AnimeListAdapter extends PagedListAdapter<Anime, AnimeListAdapter.A
                             new AsyncTask<Void, Void, Void>() {
                                 @Override
                                 protected Void doInBackground(Void... voids) {
-                                    userDao.insertFavAnime(anime);
+                                    animeDao.insertFavAnime(anime);
                                     return null;
                                 }
                             }.execute();
@@ -128,13 +128,13 @@ public class AnimeListAdapter extends PagedListAdapter<Anime, AnimeListAdapter.A
                     }
                 });
             } else {
-                titleView.setText("Loading...");
-                typeView.setText("Loading...");
+                titleView.setText(R.string.loading);
+                typeView.setText(R.string.loading);
             }
         }
     }
 
-    public static final DiffUtil.ItemCallback<Anime> DIFF_CALLBACK = new DiffUtil.ItemCallback<Anime>() {
+    private static final DiffUtil.ItemCallback<Anime> DIFF_CALLBACK = new DiffUtil.ItemCallback<Anime>() {
 
         @Override
         public boolean areItemsTheSame(Anime oldItem, Anime newItem) {

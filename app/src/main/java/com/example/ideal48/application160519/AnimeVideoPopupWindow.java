@@ -23,7 +23,6 @@ public class AnimeVideoPopupWindow extends PopupWindow {
     VideoView videoView;
 //    ProgressBar loading;
     ViewGroup parent;
-    private static AnimeImagePopupWindow instance = null;
 
 //    MediaSessionCompat mediaSession;
 //    PlaybackStateCompat.Builder stateBuilder;

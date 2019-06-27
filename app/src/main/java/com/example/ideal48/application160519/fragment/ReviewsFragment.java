@@ -3,6 +3,7 @@ package com.example.ideal48.application160519.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.ideal48.application160519.R;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
-import com.example.ideal48.application160519.model.Episodes;
 import com.example.ideal48.application160519.model.Review;
 import com.example.ideal48.application160519.model.ReviewsResponse;
 import com.squareup.picasso.Picasso;
@@ -45,7 +45,7 @@ public class ReviewsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.list_layout, container, false);
@@ -53,13 +53,13 @@ public class ReviewsFragment extends Fragment {
         emptyReviewsListTV = view.findViewById(R.id.list_empty_view);
 
         picasso = Picasso.with(getActivity());
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.list_recycler_view);
 
         Call<ReviewsResponse> call = AnimeDetailsActivity.service.getReviewsResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<ReviewsResponse>() {
             @Override
-            public void onResponse(Call<ReviewsResponse> call, Response<ReviewsResponse> response) {
-                if (response.body() != null && response.body().getmReviewsList().size() != 0){
+            public void onResponse(@NonNull Call<ReviewsResponse> call, @NonNull Response<ReviewsResponse> response) {
+                if (response.body() != null && response.body().getmReviewsList().size() != 0) {
 
                     reviewList = response.body().getmReviewsList();
 
@@ -70,15 +70,15 @@ public class ReviewsFragment extends Fragment {
                     loadingIndicator.setVisibility(View.GONE);
                     recyclerView.setAdapter(reviewsListAdapter);
 
-                }else {
+                } else {
                     loadingIndicator.setVisibility(View.GONE);
-                    emptyReviewsListTV.setText("Reviews Not Found !");
+                    emptyReviewsListTV.setText(R.string.empty_reviews_msg);
                 }
 
             }
 
             @Override
-            public void onFailure(Call<ReviewsResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<ReviewsResponse> call, @NonNull Throwable t) {
                 loadingIndicator.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "No Data !", Toast.LENGTH_SHORT).show();
             }
@@ -92,25 +92,26 @@ public class ReviewsFragment extends Fragment {
         private LayoutInflater mInflater;
         private Context context;
 
-        public ReviewsListAdapter(Context context) {
+        ReviewsListAdapter(Context context) {
             if (context != null) {
                 mInflater = LayoutInflater.from(context);
                 this.context = context;
             }
         }
 
+        @NonNull
         @Override
-        public ReviewsFragment.ReviewsListAdapter.ReviewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ReviewsFragment.ReviewsListAdapter.ReviewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.reviews_list_item, parent, false);
             return new ReviewsFragment.ReviewsListAdapter.ReviewsViewHolder(mItemView);
         }
 
         @Override
-        public void onBindViewHolder(ReviewsFragment.ReviewsListAdapter.ReviewsViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ReviewsFragment.ReviewsListAdapter.ReviewsViewHolder holder, int position) {
 
             Review currentReview = reviewList.get(position);
 
-            picasso.load(currentReview.getmReviewer().getmReviewerImageUrl()).into(holder.reviewerImageView); ;
+            picasso.load(currentReview.getmReviewer().getmReviewerImageUrl()).into(holder.reviewerImageView);
 
             holder.reviewerNameTV.setText(currentReview.getmReviewer().getmReviewerName());
 
@@ -133,7 +134,7 @@ public class ReviewsFragment extends Fragment {
             return reviewList.size();
         }
 
-        public class ReviewsViewHolder extends RecyclerView.ViewHolder {
+        class ReviewsViewHolder extends RecyclerView.ViewHolder {
 
             ImageView reviewerImageView;
             TextView reviewerNameTV;
@@ -143,7 +144,7 @@ public class ReviewsFragment extends Fragment {
             TextView reviewerRatingTV;
             TextView reviewContentTV;
 
-            public ReviewsViewHolder(View itemView) {
+            ReviewsViewHolder(View itemView) {
                 super(itemView);
                 reviewerImageView = itemView.findViewById(R.id.reviewer_image);
                 reviewerNameTV = itemView.findViewById(R.id.reviewer_name);

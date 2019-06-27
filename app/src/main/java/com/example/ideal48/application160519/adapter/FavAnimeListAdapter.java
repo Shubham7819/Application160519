@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ideal48.application160519.AnimeDao;
+import com.example.ideal48.application160519.AnimeRoomDatabase;
 import com.example.ideal48.application160519.R;
-import com.example.ideal48.application160519.UserDao;
-import com.example.ideal48.application160519.UserRoomDatabase;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
 import com.example.ideal48.application160519.model.Anime;
 import com.squareup.picasso.Picasso;
@@ -25,14 +25,14 @@ public class FavAnimeListAdapter extends RecyclerView.Adapter<FavAnimeListAdapte
     private LayoutInflater mInflater;
     private Context context;
     private List<Anime> mAnimeList;
-    private UserDao userDao;
+    private AnimeDao animeDao;
 
     public FavAnimeListAdapter(Context context, List<Anime> animeList) {
         if (context != null) {
             mInflater = LayoutInflater.from(context);
             this.context = context;
-            UserRoomDatabase userRoomDatabase = UserRoomDatabase.getDatabase(context);
-            userDao = userRoomDatabase.userDao();
+            AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(context);
+            animeDao = animeRoomDatabase.userDao();
         }
         mAnimeList = animeList;
     }
@@ -64,7 +64,7 @@ public class FavAnimeListAdapter extends RecyclerView.Adapter<FavAnimeListAdapte
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
-                        userDao.deleteFavAnime(mCurrentAnime);
+                        animeDao.deleteFavAnime(mCurrentAnime);
                         return null;
                     }
                 }.execute();

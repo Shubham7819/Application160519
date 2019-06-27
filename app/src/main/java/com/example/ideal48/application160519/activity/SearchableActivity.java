@@ -1,11 +1,11 @@
 package com.example.ideal48.application160519.activity;
 
-import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,15 +53,16 @@ public class SearchableActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             toolbar.setTitle(query);
-            if (query.length() < 3){
+
+            if (query.length() < 3) {
                 Toast.makeText(this, "Query should not be less than 3 characters.", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-                Call<AnimeSearchResponse> call = service.getSearchResults(query,1);
+                Call<AnimeSearchResponse> call = service.getSearchResults(query, 1);
                 call.enqueue(new Callback<AnimeSearchResponse>() {
                     @Override
-                    public void onResponse(Call<AnimeSearchResponse> call, Response<AnimeSearchResponse> response) {
-                        if (response.body() != null){
+                    public void onResponse(@NonNull Call<AnimeSearchResponse> call, @NonNull Response<AnimeSearchResponse> response) {
+                        if (response.body() != null || response.body().getmSearchResultsList().size() != 0) {
                             List<AnimeSearchResponse.SearchResult> searchResultList = response.body().getmSearchResultsList();
                             Log.e("SearchableActivity", searchResultList.get(0).getmTitle());
                             recyclerView.addItemDecoration(new DividerItemDecoration(SearchableActivity.this, LinearLayoutManager.VERTICAL));
@@ -80,8 +81,6 @@ public class SearchableActivity extends AppCompatActivity {
                         Toast.makeText(SearchableActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
                     }
                 });
-//            doMySearch(query);
-//                Toast.makeText(this, "searched query = " + query, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -98,6 +97,7 @@ public class SearchableActivity extends AppCompatActivity {
             picasso = Picasso.with(context);
         }
 
+        @NonNull
         @Override
         public ResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.anime_search_result_item, parent, false);
@@ -110,7 +110,7 @@ public class SearchableActivity extends AppCompatActivity {
             final AnimeSearchResponse.SearchResult currentResult = mResultList.get(position);
 
             picasso.load(currentResult.getmImageUrl()).into(holder.resultImage);
-            
+
             holder.resultTitle.setText(currentResult.getmTitle());
             holder.resultType.setText(currentResult.getmType());
             holder.resultEpisodes.setText(String.valueOf(currentResult.getmEpisodesCount()));
@@ -133,7 +133,7 @@ public class SearchableActivity extends AppCompatActivity {
             return mResultList.size();
         }
 
-        public class ResultViewHolder extends RecyclerView.ViewHolder{
+        public class ResultViewHolder extends RecyclerView.ViewHolder {
 
             ImageView resultImage;
             TextView resultTitle;

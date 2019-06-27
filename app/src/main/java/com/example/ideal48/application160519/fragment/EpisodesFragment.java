@@ -3,6 +3,7 @@ package com.example.ideal48.application160519.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,66 +45,74 @@ public class EpisodesFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.list_layout, container, false);
+
         loadingIndicator = view.findViewById(R.id.list_loading_indicator);
         emptyView = view.findViewById(R.id.list_empty_view);
+        episodesRecyclerView = view.findViewById(R.id.list_recycler_view);
 
-        //AnimeDetailsActivity.service
+        return view;
+    }
 
-        episodesRecyclerView = view.findViewById(R.id.recycler_view);
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final Context context = getActivity();
 
         Call<EpisodesResponse> call = service.getEpisodesResponse(malId);
         call.enqueue(new Callback<EpisodesResponse>() {
             @Override
-            public void onResponse(Call<EpisodesResponse> call, Response<EpisodesResponse> response) {
-                if (response.body() != null && response.body().getmEpisodesList().size() != 0){
+            public void onResponse(@NonNull Call<EpisodesResponse> call, @NonNull Response<EpisodesResponse> response) {
+                if (response.body() != null && response.body().getmEpisodesList().size() != 0) {
 
                     episodesList = response.body().getmEpisodesList();
 
-                    EpisodesListAdapter episodesListAdapter = new EpisodesListAdapter(getActivity());
-                    episodesRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-                    episodesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    EpisodesListAdapter episodesListAdapter = new EpisodesListAdapter(context);
+
+                    if (context != null) {
+                        episodesRecyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                    }
+                    episodesRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                     loadingIndicator.setVisibility(View.GONE);
                     episodesRecyclerView.setAdapter(episodesListAdapter);
 
                 } else {
                     loadingIndicator.setVisibility(View.GONE);
-                    emptyView.setText("Episodes Not Found !");
+                    emptyView.setText(R.string.episodes_not_found);
                 }
 
             }
 
             @Override
-            public void onFailure(Call<EpisodesResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<EpisodesResponse> call, @NonNull Throwable t) {
                 loadingIndicator.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "No Data !", Toast.LENGTH_SHORT).show();
+                emptyView.setText(R.string.no_data);
+                Toast.makeText(context, R.string.no_data, Toast.LENGTH_SHORT).show();
             }
         });
-
-        return view;
     }
 
     class EpisodesListAdapter extends RecyclerView.Adapter<EpisodesFragment.EpisodesListAdapter.EpisodesViewHolder> {
 
         private LayoutInflater mInflater;
-        private Context context;
 
-        public EpisodesListAdapter(Context context) {
+        EpisodesListAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
-            this.context = context;
         }
 
+        @NonNull
         @Override
-        public EpisodesFragment.EpisodesListAdapter.EpisodesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public EpisodesFragment.EpisodesListAdapter.EpisodesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.epsiodes_list_item, parent, false);
             return new EpisodesFragment.EpisodesListAdapter.EpisodesViewHolder(mItemView);
         }
 
         @Override
-        public void onBindViewHolder(EpisodesFragment.EpisodesListAdapter.EpisodesViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull EpisodesFragment.EpisodesListAdapter.EpisodesViewHolder holder, int position) {
 
             final Episodes currentEpisode = episodesList.get(position);
             String date = currentEpisode.getmAired();
@@ -119,22 +128,6 @@ public class EpisodesFragment extends Fragment {
             holder.otherTitlesTv.setText(currentEpisode.getmTitleRomanji() + "("
                     + currentEpisode.getmTitleJap() + ")");
 
-
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////                    new AnimeVideoPopupWindow(context, R.layout.image_popup_window_layout, view, currentPicture.getmLarge(), null);
-//                    Bundle b = new Bundle();
-//                    b.putString(getString(R.string.url), currentEpisode.getmVideoUrl());
-//                    b.putBoolean(getString(R.string.is_youtube_link), true);
-//
-//                    ShowVideoDialogFragment videoDialogFragment = new ShowVideoDialogFragment();
-//                    videoDialogFragment.setArguments(b);
-//                    videoDialogFragment.show(getActivity().getSupportFragmentManager().beginTransaction(), "ShowVideoDialogFragment");
-//                    Toast.makeText(context, "item clicked...", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-
         }
 
         @Override
@@ -142,14 +135,14 @@ public class EpisodesFragment extends Fragment {
             return episodesList.size();
         }
 
-        public class EpisodesViewHolder extends RecyclerView.ViewHolder {
+        class EpisodesViewHolder extends RecyclerView.ViewHolder {
 
             TextView episodeIndexTV;
             TextView episodeTitleEngTV;
             TextView episodeAiredDateTV;
             TextView otherTitlesTv;
 
-            public EpisodesViewHolder(View itemView) {
+            EpisodesViewHolder(View itemView) {
                 super(itemView);
                 episodeIndexTV = itemView.findViewById(R.id.episode_index_tv);
                 episodeTitleEngTV = itemView.findViewById(R.id.episode_title_eng_tv);

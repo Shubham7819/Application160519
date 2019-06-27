@@ -53,7 +53,7 @@ public class AnimeDataSource extends PageKeyedDataSource<Integer, Anime> {
 
         Callback<AnimeResponse> requestCallback = new Callback<AnimeResponse>() {
             @Override
-            public void onResponse(Call<AnimeResponse> call, Response<AnimeResponse> response) {
+            public void onResponse(@NonNull Call<AnimeResponse> call, Response<AnimeResponse> response) {
                 AnimeResponse animeResponse = response.body();
 
                 if (animeResponse == null) {
@@ -65,7 +65,7 @@ public class AnimeDataSource extends PageKeyedDataSource<Integer, Anime> {
             }
 
             @Override
-            public void onFailure(Call<AnimeResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<AnimeResponse> call, @NonNull Throwable t) {
 
                 Retryable retryable = new Retryable() {
                     @Override

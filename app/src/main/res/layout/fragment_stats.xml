@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Summary Stats"
+            android:text="@string/summary_stats"
             android:textStyle="bold" />
 
         <TextView
@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Score Stats"
+            android:text="@string/score_stats"
             android:textStyle="bold" />
 
         <com.github.mikephil.charting.charts.HorizontalBarChart

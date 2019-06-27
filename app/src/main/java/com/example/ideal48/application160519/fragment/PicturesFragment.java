@@ -1,15 +1,10 @@
 package com.example.ideal48.application160519.fragment;
 
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -21,7 +16,6 @@ import android.widget.Toast;
 import com.example.ideal48.application160519.AnimeImagePopupWindow;
 import com.example.ideal48.application160519.R;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
-import com.example.ideal48.application160519.model.NewsResponse;
 import com.example.ideal48.application160519.model.PicturesResponse;
 import com.squareup.picasso.Picasso;
 
@@ -49,20 +43,21 @@ public class PicturesFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.list_layout, container, false);
+
         loadingIndicator = view.findViewById(R.id.list_loading_indicator);
+        recyclerView = view.findViewById(R.id.list_recycler_view);
 
         context = getActivity();
         picasso = Picasso.with(context);
-        recyclerView = view.findViewById(R.id.recycler_view);
 
         Call<PicturesResponse> call = AnimeDetailsActivity.service.getPicturesResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<PicturesResponse>() {
             @Override
-            public void onResponse(Call<PicturesResponse> call, Response<PicturesResponse> response) {
+            public void onResponse(@NonNull Call<PicturesResponse> call, @NonNull Response<PicturesResponse> response) {
                 if (response.body() != null && response.body().getmPicturesList().size() != 0) {
 
                     picturesList = response.body().getmPicturesList();
@@ -81,7 +76,7 @@ public class PicturesFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<PicturesResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<PicturesResponse> call, @NonNull Throwable t) {
                 loadingIndicator.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
             }
@@ -90,22 +85,23 @@ public class PicturesFragment extends Fragment {
         return view;
     }
 
-    private class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.PicturesViewHolder>{
+    private class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.PicturesViewHolder> {
 
         LayoutInflater mInflater;
 
-        public PicturesAdapter(Context context) {
+        PicturesAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
         }
 
+        @NonNull
         @Override
-        public PicturesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PicturesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.pictures_list_item, parent, false);
             return new PicturesViewHolder(mItemView);
         }
 
         @Override
-        public void onBindViewHolder(final PicturesViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final PicturesViewHolder holder, int position) {
             final PicturesResponse.Pictures currentPicture = picturesList.get(position);
 
             picasso.load(currentPicture.getmSmall()).into(holder.pictureIv);
@@ -140,11 +136,11 @@ public class PicturesFragment extends Fragment {
             return picturesList.size();
         }
 
-        public class PicturesViewHolder extends RecyclerView.ViewHolder{
+        class PicturesViewHolder extends RecyclerView.ViewHolder {
 
             ImageView pictureIv;
 
-            public PicturesViewHolder(View itemView) {
+            PicturesViewHolder(View itemView) {
                 super(itemView);
                 pictureIv = itemView.findViewById(R.id.picture_iv);
             }

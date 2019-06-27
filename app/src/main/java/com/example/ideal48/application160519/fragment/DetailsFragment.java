@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ideal48.application160519.R;
-import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
 
 import static com.example.ideal48.application160519.activity.AnimeDetailsActivity.animeDetails;
 
@@ -20,6 +19,18 @@ import static com.example.ideal48.application160519.activity.AnimeDetailsActivit
 public class DetailsFragment extends Fragment {
 
     View view;
+    TextView engTitleTV;
+    TextView synoTitleTV;
+    TextView japTitleTV;
+    TextView typeTV;
+    TextView episodesTV;
+    TextView statusTV;
+    TextView premieredTV;
+    TextView broadcastTV;
+    TextView sourceTV;
+    TextView durationTV;
+    TextView synopsysTV;
+    TextView backgroundTV;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -31,47 +42,51 @@ public class DetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_details, container, false);
 
-        final TextView engTitleTV = view.findViewById(R.id.eng_title_tv);
-        final TextView synoTitleTV = view.findViewById(R.id.syno_title_tv);
-        final TextView japTitleTV = view.findViewById(R.id.jap_title_tv);
-        final TextView typeTV = view.findViewById(R.id.type_tv);
-        final TextView episodesTV = view.findViewById(R.id.episodes_tv);
-        final TextView statusTV = view.findViewById(R.id.status_tv);
-        final TextView premieredTV = view.findViewById(R.id.premiered_tv);
-        final TextView broadcastTV = view.findViewById(R.id.broadcast_tv);
-        final TextView sourceTV = view.findViewById(R.id.source_tv);
-        final TextView durationTV = view.findViewById(R.id.duration_tv);
-        final TextView synopsysTV = view.findViewById(R.id.synopsys_tv);
-        final TextView backgroundTV = view.findViewById(R.id.background_tv);
+        engTitleTV = view.findViewById(R.id.eng_title_tv);
+        synoTitleTV = view.findViewById(R.id.syno_title_tv);
+        japTitleTV = view.findViewById(R.id.jap_title_tv);
+        typeTV = view.findViewById(R.id.type_tv);
+        episodesTV = view.findViewById(R.id.episodes_tv);
+        statusTV = view.findViewById(R.id.status_tv);
+        premieredTV = view.findViewById(R.id.premiered_tv);
+        broadcastTV = view.findViewById(R.id.broadcast_tv);
+        sourceTV = view.findViewById(R.id.source_tv);
+        durationTV = view.findViewById(R.id.duration_tv);
+        synopsysTV = view.findViewById(R.id.synopsys_tv);
+        backgroundTV = view.findViewById(R.id.background_tv);
 
+        return view;
+    }
 
-        engTitleTV.setText("English: " + String.valueOf(animeDetails.getmTitleEng()));
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        engTitleTV.setText("English: " + animeDetails.getmTitleEng());
         synoTitleTV.setText("Synonyms: " + animeDetails.getmTitleSyno());
         japTitleTV.setText("Japanese: " + animeDetails.getmTitleJap());
         typeTV.setText("Type: " + animeDetails.getmType());
-        episodesTV.setText("Episodes: " + String.valueOf(animeDetails.getmEpisodes()));
+        episodesTV.setText("Episodes: " + animeDetails.getmEpisodes());
         statusTV.setText("Status: " + animeDetails.getmStatus());
-        if (animeDetails.getmPremiered()== null || TextUtils.isEmpty(animeDetails.getmPremiered())){
+        if (animeDetails.getmPremiered() == null || TextUtils.isEmpty(animeDetails.getmPremiered())) {
             premieredTV.setText("Premiered: N/A");
-        }else {
+        } else {
             premieredTV.setText("Premiered: " + animeDetails.getmPremiered());
         }
 
-        if (animeDetails.getmBroadcast()== null || TextUtils.isEmpty(animeDetails.getmBroadcast())){
+        if (animeDetails.getmBroadcast() == null || TextUtils.isEmpty(animeDetails.getmBroadcast())) {
             broadcastTV.setText("Broadcast: N/A");
-        }else {
+        } else {
             broadcastTV.setText("Broadcast: " + animeDetails.getmBroadcast());
         }
         sourceTV.setText("Source: " + animeDetails.getmSource());
         durationTV.setText("Duration: " + animeDetails.getmDuration());
         synopsysTV.setText(animeDetails.getmSynopsis());
 
-        if (animeDetails.getmBackground()== null || TextUtils.isEmpty(animeDetails.getmBackground())){
+        if (animeDetails.getmBackground() == null || TextUtils.isEmpty(animeDetails.getmBackground())) {
             backgroundTV.setText("N/A");
-        }else {
+        } else {
             backgroundTV.setText(animeDetails.getmBackground());
         }
-        return view;
     }
-
 }

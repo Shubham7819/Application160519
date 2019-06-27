@@ -3,6 +3,7 @@ package com.example.ideal48.application160519.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.example.ideal48.application160519.R;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
 import com.example.ideal48.application160519.model.StatsResponse;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -48,7 +48,7 @@ public class StatsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_stats, container, false);
@@ -95,7 +95,7 @@ public class StatsFragment extends Fragment {
         Call<StatsResponse> call = AnimeDetailsActivity.service.getStatsResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<StatsResponse>() {
             @Override
-            public void onResponse(Call<StatsResponse> call, Response<StatsResponse> response) {
+            public void onResponse(@NonNull Call<StatsResponse> call, @NonNull Response<StatsResponse> response) {
                 if (response.body() != null) {
 
                     StatsResponse stats = response.body();
@@ -146,13 +146,13 @@ public class StatsFragment extends Fragment {
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         onHoldCountTV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                        onHoldCountTV.setText("Stats Not Found !");
+                        onHoldCountTV.setText(R.string.empty_stats_msg);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<StatsResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<StatsResponse> call, @NonNull Throwable t) {
 
                 Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
 

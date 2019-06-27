@@ -4,6 +4,7 @@ package com.example.ideal48.application160519.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import com.example.ideal48.application160519.R;
 import com.example.ideal48.application160519.activity.AnimeDetailsActivity;
 import com.example.ideal48.application160519.model.RecommendationsResponse;
-import com.example.ideal48.application160519.model.Review;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,21 +46,22 @@ public class RecommendationsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.list_layout, container, false);
+
         loadingIndicator = view.findViewById(R.id.list_loading_indicator);
         emptyListTV = view.findViewById(R.id.list_empty_view);
+        recyclerView = view.findViewById(R.id.list_recycler_view);
 
         context = getActivity();
         picasso = Picasso.with(context);
-        recyclerView = view.findViewById(R.id.recycler_view);
 
         Call<RecommendationsResponse> call = AnimeDetailsActivity.service.getRecommendationsResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<RecommendationsResponse>() {
             @Override
-            public void onResponse(Call<RecommendationsResponse> call, Response<RecommendationsResponse> response) {
+            public void onResponse(@NonNull Call<RecommendationsResponse> call, @NonNull Response<RecommendationsResponse> response) {
                 if (response.body() != null && response.body().getmRecommendationsList().size() != 0) {
 
                     recommendationsList = response.body().getmRecommendationsList();
@@ -74,12 +75,12 @@ public class RecommendationsFragment extends Fragment {
 
                 } else {
                     loadingIndicator.setVisibility(View.GONE);
-                    emptyListTV.setText("Recommendations Not Found !");
+                    emptyListTV.setText(R.string.empty_recomm_msg);
                 }
             }
 
             @Override
-            public void onFailure(Call<RecommendationsResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RecommendationsResponse> call, @NonNull Throwable t) {
                 loadingIndicator.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
             }
@@ -93,27 +94,28 @@ public class RecommendationsFragment extends Fragment {
         private LayoutInflater mInflater;
         private Context context;
 
-        public RecommendationsListAdapter(Context context) {
+        RecommendationsListAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public RecommendationsFragment.RecommendationsListAdapter.RecommendationsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecommendationsFragment.RecommendationsListAdapter.RecommendationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View mItemView = mInflater.inflate(R.layout.anime_list_item, parent, false);
             return new RecommendationsFragment.RecommendationsListAdapter.RecommendationsViewHolder(mItemView);
         }
 
         @Override
-        public void onBindViewHolder(RecommendationsFragment.RecommendationsListAdapter.RecommendationsViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecommendationsFragment.RecommendationsListAdapter.RecommendationsViewHolder holder, int position) {
 
             final RecommendationsResponse.Recommendations currentRecommendation = recommendationsList.get(position);
 
-            picasso.load(currentRecommendation.getmImageUrl()).into(holder.posterImageView); ;
+            picasso.load(currentRecommendation.getmImageUrl()).into(holder.posterImageView);
 
             holder.titleTV.setText(currentRecommendation.getmTitle());
 
-            holder.recommendedByTV.setText("Recommended by " + String.valueOf(currentRecommendation.getmRecommendationCount()) + " users");
+            holder.recommendedByTV.setText("Recommended by " + currentRecommendation.getmRecommendationCount() + " users");
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,13 +134,13 @@ public class RecommendationsFragment extends Fragment {
             return recommendationsList.size();
         }
 
-        public class RecommendationsViewHolder extends RecyclerView.ViewHolder {
+        class RecommendationsViewHolder extends RecyclerView.ViewHolder {
 
             ImageView posterImageView;
             TextView titleTV;
             TextView recommendedByTV;
 
-            public RecommendationsViewHolder(View itemView) {
+            RecommendationsViewHolder(View itemView) {
                 super(itemView);
                 posterImageView = itemView.findViewById(R.id.anime_poster_iv);
                 titleTV = itemView.findViewById(R.id.anime_title_tv);

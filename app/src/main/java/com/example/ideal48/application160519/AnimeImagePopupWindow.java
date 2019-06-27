@@ -3,7 +3,6 @@ package com.example.ideal48.application160519;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.view.Gravity;
@@ -30,7 +29,6 @@ public class AnimeImagePopupWindow extends PopupWindow {
     private static AnimeImagePopupWindow instance = null;
 
 
-
     public AnimeImagePopupWindow(Context context, int layout, View v, final String imageUrl, Bitmap bitmap) {
         super(((LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.image_popup_window_layout, null), ViewGroup.LayoutParams.MATCH_PARENT,
@@ -41,8 +39,11 @@ public class AnimeImagePopupWindow extends PopupWindow {
         }
         this.mContext = context;
         this.view = getContentView();
-        ImageButton closeButton = (ImageButton) this.view.findViewById(R.id.popup_close_btn);
-        ImageButton shareButton = (ImageButton) this.view.findViewById(R.id.popup_share_btn);
+
+        photoView = view.findViewById(R.id.popup_image_view);
+        loading = view.findViewById(R.id.popup_progress_bar);
+        ImageButton closeButton = this.view.findViewById(R.id.popup_close_btn);
+        ImageButton shareButton = this.view.findViewById(R.id.popup_share_btn);
         setOutsideTouchable(true);
 
         setFocusable(true);
@@ -72,8 +73,6 @@ public class AnimeImagePopupWindow extends PopupWindow {
         });
         //---------Begin customising this popup--------------------
 
-        photoView = (ImageView) view.findViewById(R.id.popup_image_view);
-        loading = (ProgressBar) view.findViewById(R.id.popup_progress_bar);
         loading.setIndeterminate(true);
         loading.setVisibility(View.VISIBLE);
 //        photoView.setMaximumScale(6);
@@ -82,60 +81,18 @@ public class AnimeImagePopupWindow extends PopupWindow {
         //----------------------------
         if (bitmap != null) {
             loading.setVisibility(View.GONE);
-//            if (Build.VERSION.SDK_INT >= 16) {
-//                parent.setBackground(new BitmapDrawable(mContext.getResources(),
-//                        Constants.fastblur(Bitmap.createScaledBitmap(bitmap,
-//                                50, 50, true))));// ));
-//            } else {
-//                onPalette(Palette.from(bitmap).generate());
-//
-//            }
             photoView.setImageBitmap(bitmap);
         } else {
             Picasso.with(context)
                     .load(imageUrl)
-
                     .error(R.drawable.ic_close).into(photoView);
-            loading.setVisibility(View.GONE);
-//                    .listener(new RequestListener<Bitmap>() {
-//                        @Override
-//                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-//                            loading.setIndeterminate(false);
-//                            loading.setBackgroundColor(Color.LTGRAY);
-//                            return false;
-//                        }
-//
-//                        @Override
-//                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-//                            if (Build.VERSION.SDK_INT >= 16) {
-//                                parent.setBackground(new BitmapDrawable(mContext.getResources(), Constants.fastblur(Bitmap.createScaledBitmap(resource, 50, 50, true))));// ));
-//                            } else {
-//                                onPalette(Palette.from(resource).generate());
-//
-//                            }
-//                            photoView.setImageBitmap(resource);
-//
-//                            loading.setVisibility(View.GONE);
-//                            return false;
-//                        }
-//                    })
-//
-//
-//
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
 
+            loading.setVisibility(View.GONE);
 
             showAtLocation(v, Gravity.CENTER, 0, 0);
         }
         //------------------------------
 
     }
-//
-//    public void onPalette(Palette palette) {
-//        if (null != palette) {
-//            ViewGroup parent = (ViewGroup) photoView.getParent().getParent();
-//            parent.setBackgroundColor(palette.getDarkVibrantColor(Color.GRAY));
-//        }
-//    }
-    
+
 }

@@ -5,15 +5,13 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "fav_animes_table", indices = {@Index(value = {"mal_id"}, unique = true)})
 public class Anime {
 
-    @NonNull
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     @ColumnInfo(name = "mal_id")
     @SerializedName("mal_id")
     public int mMalId;

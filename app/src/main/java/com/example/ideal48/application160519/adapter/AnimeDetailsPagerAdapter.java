@@ -17,30 +17,27 @@ import com.example.ideal48.application160519.fragment.VideosFragment;
 
 public class AnimeDetailsPagerAdapter extends FragmentPagerAdapter {
 
-    Context mContext;
-
     public AnimeDetailsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mContext = context;
     }
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 0){
+        if (position == 0) {
             return new DetailsFragment();
-        } else if (position == 1){
+        } else if (position == 1) {
             return new VideosFragment();
-        } else if (position == 2){
+        } else if (position == 2) {
             return new EpisodesFragment();
-        } else if (position == 3){
+        } else if (position == 3) {
             return new ReviewsFragment();
-        } else if (position == 4){
+        } else if (position == 4) {
             return new RecommendationsFragment();
-        } else if (position == 5){
+        } else if (position == 5) {
             return new StatsFragment();
-        } else if (position == 6){
+        } else if (position == 6) {
             return new NewsFragment();
-        } else if (position == 7){
+        } else if (position == 7) {
             return new ForumFragment();
         } else {
             return new PicturesFragment();
@@ -54,24 +51,24 @@ public class AnimeDetailsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if (position == 0){
+        if (position == 0) {
             return "Details";
-        } else if (position == 1){
+        } else if (position == 1) {
             return "Videos";
-        } else if (position == 2){
+        } else if (position == 2) {
             return "Episodes";
-        } else if (position == 3){
+        } else if (position == 3) {
             return "Reviews";
-        } else if (position == 4){
-            return "recommendations";
-        } else if (position == 5){
-            return "stats";
-        } else if (position == 6){
-            return "news";
-        } else if (position == 7){
-            return "forum";
+        } else if (position == 4) {
+            return "Recommendations";
+        } else if (position == 5) {
+            return "Stats";
+        } else if (position == 6) {
+            return "News";
+        } else if (position == 7) {
+            return "Forum";
         } else {
-            return "pictures";
+            return "Pictures";
         }
     }
 }

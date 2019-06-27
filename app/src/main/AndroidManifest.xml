@@ -28,13 +28,8 @@
 
         <activity android:name=".activity.AnimeDetailsActivity" />
 
-        <activity android:name=".activity.EditProfileActivity" />
-
-        <activity
-            android:name=".activity.UserActivity"
-            android:parentActivityName=".activity.HomeActivity" />
-
         <activity android:name=".activity.MainActivity"
+            android:theme="@style/BrandedLaunch"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

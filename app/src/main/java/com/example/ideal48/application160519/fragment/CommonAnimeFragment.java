@@ -33,7 +33,7 @@ import com.example.ideal48.application160519.model.Anime;
 
 public class CommonAnimeFragment extends Fragment {
 
-    View view;
+    View mview;
     View loadingIndicator;
     TextView mEmptyStateTextView;
     RecyclerView animeRecyclerView;
@@ -47,6 +47,7 @@ public class CommonAnimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mAnimeCategory = getArguments().getString(getString(R.string.url));
             Log.v(TAG, "Category: " + mAnimeCategory);
@@ -57,18 +58,18 @@ public class CommonAnimeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.anime_list_layout, container, false);
+        mview = inflater.inflate(R.layout.anime_list_layout, container, false);
 
-        mEmptyStateTextView = (TextView) view.findViewById(R.id.empty_view);
-        loadingIndicator = view.findViewById(R.id.loading_indicator);
-        animeRecyclerView = view.findViewById(R.id.anime_recycler_list);
+        mEmptyStateTextView = mview.findViewById(R.id.empty_view);
+        loadingIndicator = mview.findViewById(R.id.loading_indicator);
+        animeRecyclerView = mview.findViewById(R.id.anime_recycler_list);
 
-        return view;
+        return mview;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Log.v(TAG, "Category: " + mAnimeCategory + ": onResume Called");
 
         ConnectivityManager connectivityManager = (ConnectivityManager)
@@ -105,7 +106,7 @@ public class CommonAnimeFragment extends Fragment {
                 public void onChanged(@Nullable final RequestFailure requestFailure) {
                     if (requestFailure == null) return;
 
-                    Snackbar.make(mEmptyStateTextView, requestFailure.getErrorMessage(), Snackbar.LENGTH_LONG)
+                    Snackbar.make(mview, requestFailure.getErrorMessage(), Snackbar.LENGTH_LONG)
                             .setAction("RETRY", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -119,10 +120,16 @@ public class CommonAnimeFragment extends Fragment {
         } else {
 
             loadingIndicator.setVisibility(View.GONE);
-            mEmptyStateTextView.setText("Internet Not Available");
+            mEmptyStateTextView.setText(R.string.no_internet);
 
             Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 }

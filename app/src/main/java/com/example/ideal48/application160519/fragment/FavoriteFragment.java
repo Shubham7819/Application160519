@@ -1,7 +1,6 @@
 package com.example.ideal48.application160519.fragment;
 
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,28 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.ideal48.application160519.AppSession;
-import com.example.ideal48.application160519.GetDataService;
 import com.example.ideal48.application160519.R;
-import com.example.ideal48.application160519.RetrofitClientInstance;
-import com.example.ideal48.application160519.UserDao;
-import com.example.ideal48.application160519.adapter.AnimeListAdapter;
+import com.example.ideal48.application160519.AnimeDao;
+import com.example.ideal48.application160519.AnimeRoomDatabase;
 import com.example.ideal48.application160519.adapter.FavAnimeListAdapter;
-import com.example.ideal48.application160519.adapter.FavListAdapter;
-import com.example.ideal48.application160519.adapter.UserListAdapter;
-import com.example.ideal48.application160519.UserRoomDatabase;
 import com.example.ideal48.application160519.model.Anime;
-import com.example.ideal48.application160519.model.AnimeDetails;
-import com.example.ideal48.application160519.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import static com.example.ideal48.application160519.activity.HomeActivity.toolbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,9 +29,9 @@ import retrofit2.Response;
 public class FavoriteFragment extends Fragment {
 
     private TextView mEmptyListTV;
-    public static RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     View loadingIndicator;
-    UserDao userDao;
+    AnimeDao animeDao;
 
     List<Anime> favAnimeList = new ArrayList<>();
 
@@ -59,10 +47,10 @@ public class FavoriteFragment extends Fragment {
 
         loadingIndicator = view.findViewById(R.id.list_loading_indicator);
         mEmptyListTV = view.findViewById(R.id.list_empty_view);
-        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView = view.findViewById(R.id.list_recycler_view);
 
-        UserRoomDatabase userRoomDatabase = UserRoomDatabase.getDatabase(getActivity());
-        userDao = userRoomDatabase.userDao();
+        AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(getActivity());
+        animeDao = animeRoomDatabase.userDao();
 
         return view;
     }
@@ -71,12 +59,14 @@ public class FavoriteFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        toolbar.setTitle(R.string.favorite);
+
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... voids) {
 
-                favAnimeList = userDao.getAllFavAnime();
+                favAnimeList = animeDao.getAllFavAnime();
                 return null;
 
             }
@@ -84,10 +74,10 @@ public class FavoriteFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                if (favAnimeList == null || favAnimeList.size() == 0){
+                if (favAnimeList == null || favAnimeList.size() == 0) {
                     loadingIndicator.setVisibility(View.GONE);
                     mRecyclerView.removeAllViewsInLayout();
-                    mEmptyListTV.setText("Favorite List is Empty !");
+                    mEmptyListTV.setText(R.string.fav_list_empty);
                 } else {
                     FavAnimeListAdapter mAdapter = new FavAnimeListAdapter(getActivity(), favAnimeList);
                     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:padding="12dp"
-            android:text="Promotions" />
+            android:text="@string/promotions" />
 
         <!--<android.support.v7.widget.RecyclerView-->
             <!--android:id="@+id/promo_video_rv"-->
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:padding="12dp"
-            android:text="Episodes"/>
+            android:text="@string/episodes"/>
 
         <!--<android.support.v7.widget.RecyclerView-->
             <!--android:id="@+id/episodes_video_rv"-->
