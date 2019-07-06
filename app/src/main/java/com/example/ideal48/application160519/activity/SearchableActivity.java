@@ -94,7 +94,7 @@ public class SearchableActivity extends AppCompatActivity {
         public ResultListAdapter(Context context, List<AnimeSearchResponse.SearchResult> resultList) {
             mInflater = LayoutInflater.from(context);
             mResultList = resultList;
-            picasso = Picasso.with(context);
+            picasso = Picasso.get();
         }
 
         @NonNull

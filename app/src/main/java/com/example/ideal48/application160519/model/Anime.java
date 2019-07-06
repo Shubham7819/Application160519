@@ -5,13 +5,16 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.v7.util.DiffUtil;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "fav_animes_table", indices = {@Index(value = {"mal_id"}, unique = true)})
+@Entity(tableName = "fav_animes_table")   //, indices = {@Index(value = {"mal_id"}, unique = true)}
 public class Anime {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    public int mId;
+
     @ColumnInfo(name = "mal_id")
     @SerializedName("mal_id")
     public int mMalId;
@@ -43,6 +46,37 @@ public class Anime {
     @ColumnInfo(name = "score")
     @SerializedName("score")
     public double mScore;
+
+    @ColumnInfo(name = "fav")
+    public boolean isFav;
+
+    public void setFav(boolean fav) {
+        isFav = fav;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    @ColumnInfo(name = "tab_type")
+    public String mTabType;
+
+    public void setmTabType(String mTabType) {
+        this.mTabType = mTabType;
+    }
+
+    public static DiffUtil.ItemCallback<Anime> DIFF_CALLBACK = new DiffUtil.ItemCallback<Anime>() {
+
+        @Override
+        public boolean areItemsTheSame(Anime oldItem, Anime newItem) {
+            return (oldItem.getmMalId() == newItem.getmMalId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(Anime oldItem, Anime newItem) {
+            return (oldItem.getmMalId() == newItem.getmMalId());
+        }
+    };
 
     public int getmMalId() {
         return mMalId;
@@ -86,19 +120,6 @@ public class Anime {
     }
 
     public Anime() {
-    }
-
-    Anime(int malId, int rank, String title, String imageUrl, String type,
-          int episodes, int members, double score) {
-        mMalId = malId;
-        mRank = rank;
-        mTitle = title;
-        mImageUrl = imageUrl;
-        mType = type;
-        mEpisodes = episodes;
-        mMembers = members;
-        mScore = score;
-        mImageUrl = imageUrl;
     }
 
 }

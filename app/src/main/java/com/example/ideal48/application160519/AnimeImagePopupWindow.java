@@ -83,7 +83,7 @@ public class AnimeImagePopupWindow extends PopupWindow {
             loading.setVisibility(View.GONE);
             photoView.setImageBitmap(bitmap);
         } else {
-            Picasso.with(context)
+            Picasso.get()
                     .load(imageUrl)
                     .error(R.drawable.ic_close).into(photoView);
 

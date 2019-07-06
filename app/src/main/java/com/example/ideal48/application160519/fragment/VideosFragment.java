@@ -136,7 +136,7 @@ public class VideosFragment extends Fragment {
 
             final PromoVideos currentPromoVideo = promoVideosList.get(position);
 
-            Picasso picasso = Picasso.with(context);
+            Picasso picasso = Picasso.get();
             picasso.load(currentPromoVideo.getmImageUrl()).into(holder.videoSnapIV);
 
             holder.titleTV.setText(currentPromoVideo.getmTitle());
@@ -211,7 +211,7 @@ public class VideosFragment extends Fragment {
 
             final EpisodesVideos currentEpisodesVideos = episodesVideosList.get(position);
 
-            Picasso picasso = Picasso.with(context);
+            Picasso picasso = Picasso.get();
             picasso.load(currentEpisodesVideos.getmImageUrl()).into(holder.videoSnapIV);
 
             holder.titleTV.setText(currentEpisodesVideos.getmTitle());

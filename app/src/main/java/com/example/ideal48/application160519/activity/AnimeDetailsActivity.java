@@ -65,14 +65,14 @@ public class AnimeDetailsActivity extends AppCompatActivity {
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         appBarLayout = findViewById(R.id.app_bar_layout);
 
-        picasso = Picasso.with(this);
+        picasso = Picasso.get();
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(AnimeDetailsActivity.this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(this);
-        animeDao = animeRoomDatabase.userDao();
+        AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(AnimeDetailsActivity.this);
+        animeDao = animeRoomDatabase.animeDao();
 
         posterIV = findViewById(R.id.poster_iv);
         titleTV = findViewById(R.id.title_tv);
@@ -158,7 +158,7 @@ public class AnimeDetailsActivity extends AppCompatActivity {
                                         new AsyncTask<Void, Void, Void>() {
                                             @Override
                                             protected Void doInBackground(Void... voids) {
-                                                animeDao.insertFavAnime(setFav);
+                                                animeDao.setAnimeFav(malId);
                                                 return null;
                                             }
                                         }.execute();
@@ -170,7 +170,7 @@ public class AnimeDetailsActivity extends AppCompatActivity {
                                         new AsyncTask<Void, Void, Void>() {
                                             @Override
                                             protected Void doInBackground(Void... voids) {
-                                                animeDao.deleteFavAnime(delFav);
+                                                animeDao.deleteFavAnime(malId);
                                                 return null;
                                             }
                                         }.execute();

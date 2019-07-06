@@ -56,7 +56,7 @@ public class RecommendationsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_recycler_view);
 
         context = getActivity();
-        picasso = Picasso.with(context);
+        picasso = Picasso.get();
 
         Call<RecommendationsResponse> call = AnimeDetailsActivity.service.getRecommendationsResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<RecommendationsResponse>() {

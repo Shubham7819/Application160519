@@ -1,5 +1,6 @@
 package com.example.ideal48.application160519;
 
+import com.example.ideal48.application160519.model.Anime;
 import com.example.ideal48.application160519.model.AnimeDetails;
 import com.example.ideal48.application160519.model.AnimeResponse;
 import com.example.ideal48.application160519.model.AnimeSearchResponse;
@@ -12,6 +13,8 @@ import com.example.ideal48.application160519.model.ReviewsResponse;
 import com.example.ideal48.application160519.model.StatsResponse;
 import com.example.ideal48.application160519.model.VideosResponse;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -20,31 +23,31 @@ import retrofit2.http.Query;
 public interface GetDataService {
 
     @GET("top/anime/{page}")
-    Call<AnimeResponse> getAllAnime(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getAllAnime(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/airing")
-    Call<AnimeResponse> getAiring(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getAiring(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/upcoming")
-    Call<AnimeResponse> getUpcoming(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getUpcoming(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/tv")
-    Call<AnimeResponse> getTV(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getTV(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/movie")
-    Call<AnimeResponse> getMovie(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getMovie(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/ova")
-    Call<AnimeResponse> getOva(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getOva(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/special")
-    Call<AnimeResponse> getSpecial(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getSpecial(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/bypopularity")
-    Call<AnimeResponse> getBypopularity(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getBypopularity(@Path("page") int pageIndex);
 
     @GET("top/anime/{page}/favorite")
-    Call<AnimeResponse> getFavorite(@Path("page") int pageIndex);
+    Call<ArrayList<Anime>> getFavorite(@Path("page") int pageIndex);
 
 
     @GET("anime/{id}/characters_staff")

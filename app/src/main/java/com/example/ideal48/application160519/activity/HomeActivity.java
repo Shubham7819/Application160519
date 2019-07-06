@@ -30,11 +30,6 @@ public class HomeActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.home_activity_toolbar);
         bottomNav = findViewById(R.id.home_activity_bottom_navigation_bar);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         toolbar.setEnabled(false);
 
@@ -70,5 +65,11 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v("HomeActivity.java", "onResume called");
     }
 }

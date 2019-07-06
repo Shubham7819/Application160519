@@ -42,6 +42,7 @@ public class AnimeFragment extends Fragment {
         view = inflater.inflate(R.layout.anim_layout, container, false);
 
         context = getActivity();
+        Log.v("AnimeFragment", "onCreateView called");
 
         ViewPager viewPager = view.findViewById(R.id.anime_viewpager);
         TabLayout tabLayout = view.findViewById(R.id.anime_tabs);
@@ -58,7 +59,7 @@ public class AnimeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("AnimeFragment", "onResume called");
+        Log.v("AnimeFragment", "onResume called");
 
         toolbar.setTitle(R.string.anime);
 
@@ -86,7 +87,7 @@ public class AnimeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("AnimeFragment", "onPause called");
+        Log.v("AnimeFragment", "onPause called");
 
         // Remove Search Action from Toolbar when Fragment is not Visible.
         toolbar.getMenu().clear();

@@ -26,13 +26,15 @@ public class FavAnimeListAdapter extends RecyclerView.Adapter<FavAnimeListAdapte
     private Context context;
     private List<Anime> mAnimeList;
     private AnimeDao animeDao;
+    Picasso picasso;
 
     public FavAnimeListAdapter(Context context, List<Anime> animeList) {
         if (context != null) {
             mInflater = LayoutInflater.from(context);
             this.context = context;
             AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(context);
-            animeDao = animeRoomDatabase.userDao();
+            animeDao = animeRoomDatabase.animeDao();
+            picasso = Picasso.get();
         }
         mAnimeList = animeList;
     }
@@ -52,7 +54,6 @@ public class FavAnimeListAdapter extends RecyclerView.Adapter<FavAnimeListAdapte
         holder.typeView.setText("Type: " + mCurrentAnime.getmType());
         holder.episodesView.setText("Episodes: " + String.valueOf(mCurrentAnime.getmEpisodes()));
 
-        Picasso picasso = Picasso.with(context);
         picasso.load(mCurrentAnime.getmImageUrl()).into(holder.posterView);
 
         holder.animeFavView.setImageResource(R.drawable.ic_favorite);
@@ -64,7 +65,7 @@ public class FavAnimeListAdapter extends RecyclerView.Adapter<FavAnimeListAdapte
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
-                        animeDao.deleteFavAnime(mCurrentAnime);
+                        animeDao.deleteFavAnime(mCurrentAnime.getmMalId());
                         return null;
                     }
                 }.execute();

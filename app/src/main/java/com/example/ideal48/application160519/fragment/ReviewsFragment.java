@@ -52,7 +52,7 @@ public class ReviewsFragment extends Fragment {
         loadingIndicator = view.findViewById(R.id.list_loading_indicator);
         emptyReviewsListTV = view.findViewById(R.id.list_empty_view);
 
-        picasso = Picasso.with(getActivity());
+        picasso = Picasso.get();
         recyclerView = view.findViewById(R.id.list_recycler_view);
 
         Call<ReviewsResponse> call = AnimeDetailsActivity.service.getReviewsResponse(AnimeDetailsActivity.malId);

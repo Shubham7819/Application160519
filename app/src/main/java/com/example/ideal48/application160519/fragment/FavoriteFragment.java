@@ -49,8 +49,10 @@ public class FavoriteFragment extends Fragment {
         mEmptyListTV = view.findViewById(R.id.list_empty_view);
         mRecyclerView = view.findViewById(R.id.list_recycler_view);
 
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+
         AnimeRoomDatabase animeRoomDatabase = AnimeRoomDatabase.getDatabase(getActivity());
-        animeDao = animeRoomDatabase.userDao();
+        animeDao = animeRoomDatabase.animeDao();
 
         return view;
     }
@@ -80,7 +82,6 @@ public class FavoriteFragment extends Fragment {
                     mEmptyListTV.setText(R.string.fav_list_empty);
                 } else {
                     FavAnimeListAdapter mAdapter = new FavAnimeListAdapter(getActivity(), favAnimeList);
-                    mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
                     loadingIndicator.setVisibility(View.GONE);
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();

@@ -1,7 +1,6 @@
 package com.example.ideal48.application160519;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 /**
  * Created by ideal48 on 16/5/19.
@@ -14,7 +13,7 @@ public class UserRepository {
 
     UserRepository(Application application){
         AnimeRoomDatabase db = AnimeRoomDatabase.getDatabase(application);
-        mAnimeDao = db.userDao();
+        mAnimeDao = db.animeDao();
         //mAllUsers = mAnimeDao.getAllUsers();
     }
 

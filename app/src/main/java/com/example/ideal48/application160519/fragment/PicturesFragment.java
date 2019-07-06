@@ -52,7 +52,7 @@ public class PicturesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_recycler_view);
 
         context = getActivity();
-        picasso = Picasso.with(context);
+        picasso = Picasso.get();
 
         Call<PicturesResponse> call = AnimeDetailsActivity.service.getPicturesResponse(AnimeDetailsActivity.malId);
         call.enqueue(new Callback<PicturesResponse>() {
